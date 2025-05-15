@@ -4,20 +4,23 @@ using Microsoft.Extensions.Configuration;
 
 namespace IDP.Infra.Data
 {
-    public class ShopDbContext:DbContext
+    public class ShopCommandDbContext : DbContext
     {
         protected readonly IConfiguration Configuration;
-
-        public ShopDbContext(IConfiguration configuration)
+        public ShopCommandDbContext(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
 
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             // connect to postgres with connection string from app settings
             options.UseSqlServer(Configuration.GetConnectionString("CommandDBConnection"));
         }
-        public DbSet<User> tbl_Users { get; set; }
+        public DbSet<User> Tbl_Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
